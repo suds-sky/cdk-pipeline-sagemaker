@@ -24,9 +24,11 @@ class PipelineStack(Stack):
             ),
             commands=[
                 "npm install -g aws-cdk",
+                "curl -sSL https://install.python-poetry.org | python3 -",
+                "export PATH=\"/root/.local/bin:$PATH\"",
                 "poetry install",
                 "cdk synth --no-lookups"
-            ]
+            ],
         )
 
         pipeline = pipelines.CodePipeline(
