@@ -1,7 +1,8 @@
 from aws_cdk import (
     Stack,
     pipelines as pipelines,
-    aws_iam as iam
+    aws_codepipeline_actions as codepipeline_actions,
+    aws_iam as iam, SecretValue
 )
 from constructs import Construct
 
@@ -17,6 +18,9 @@ class PipelineStack(Stack):
             input=pipelines.CodePipelineSource.git_hub(
                 repo_string=f"suds-sky/{PROJECT_NAME}",
                 branch="main",
+                trigger=codepipeline_actions.GitHubTrigger.WEBHOOK,
+                authentication=SecretValue.secrets_manager(
+                    "cdk_pipeline_github", json_field='github')
             ),
             commands=[
                 "npm install -g aws-cdk",
@@ -29,7 +33,7 @@ class PipelineStack(Stack):
             self,
             "Pipeline",
             self_mutation=True,
-            pipeline_name=f"{PROJECT_NAME}-poc",
+            pipeline_name=PROJECT_NAME,
             docker_enabled_for_synth=False,
             docker_enabled_for_self_mutation=False,
             synth=synth_step,
