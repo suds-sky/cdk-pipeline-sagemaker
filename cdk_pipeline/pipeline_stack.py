@@ -26,7 +26,7 @@ class PipelineStack(Stack):
                 "npm install -g aws-cdk",
                 "curl -sSL https://install.python-poetry.org | python3 -",
                 "export PATH=\"/root/.local/bin:$PATH\"",
-                "poetry config settings.virtualenvs.in-project true",
+                "poetry config virtualenvs.create false",
                 "poetry install --no-root",
                 "cdk synth --no-lookups"
             ],
